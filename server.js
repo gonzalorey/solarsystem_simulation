@@ -14,6 +14,8 @@ var server = app.listen(3000, function () {
 	console.log('Example app listening on port %s!', port);
 });
 
+module.exports = server;
+
 app.get('/weather', function (req, res) {
 	if(!req.query.day || !utils.isNumeric(req.query.day)) {
 		res.status(400).send('Missing valid day parameter, insert an integer.');
