@@ -1,11 +1,11 @@
 var utils = require('./utils.js');
 
-const INITIAL_POSITION = 0;   // TODO: make constant
+const INITIAL_POSITION = 360;
 
 var planetFarengi = {
   name: 'Farengi', 
   speed: 1,
-  direction: 'clockwise',
+  direction: 1,   // clockwise
   distance: 500,
   position: INITIAL_POSITION
 };
@@ -13,7 +13,7 @@ var planetFarengi = {
 var planetBetasoide = {
   name: 'Betasoide', 
   speed: 3,
-  direction: 'clockwise',
+  direction: 1,   // clockwise
   distance: 2000,
   position: INITIAL_POSITION
 };
@@ -21,7 +21,7 @@ var planetBetasoide = {
 var planetVulcano = {
   name: 'Vulcano', 
   speed: 5,
-  direction: 'counterClockwise',
+  direction: -1,   // Counter Clockwise
   distance: 1000,
   position: INITIAL_POSITION
 };
@@ -33,7 +33,7 @@ exports.planets = planets;
 var starSol = {
   name: 'Sol',
   speed: 0,
-  direction: 'clockwise',
+  direction: 1,   // clockwise
   distance: 0
 };
 
@@ -42,9 +42,7 @@ var objects = [starSol, planets];
 
 exports.addDaysToPlanet = function(planet, days) {
   var copiedPlanet = utils.clone(planet);   
-  copiedPlanet.position = (planet.speed * days) % 360;    // TODO: Change to consider clockwise and counterclockwise
-
-  console.log(copiedPlanet);
+  copiedPlanet.position = (INITIAL_POSITION + planet.position + planet.speed * days * planet.direction) % 360;
 
   return copiedPlanet;
 }

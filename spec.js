@@ -34,7 +34,7 @@ describe('loading express', function () {
 // ===================================================================================
 describe('planet operations', function() {
 	
-	describe('isDraught', function(){
+	describe('isDraught', function() {
 		
 		it('should return \'true\' when all planets are alligned', function() {
 			var mockedPlanets = [{position: 10}, {position: 10}, {position: 190}];
@@ -46,6 +46,24 @@ describe('planet operations', function() {
 			var mockedPlanets = [{position: 0}, {position: 10}, {position: 190}];
 
 			assert.equal(backend.isDraught(mockedPlanets), false);
+		});
+	});
+
+	describe('addDaysToPlanet', function() {
+		it('should return postion = 5 for a planet positioned in 0, moving at a 5 deg/day speed and clockwise direction after a single day passed', function() {
+			var mockedPlanet = {position: 0, speed: 5, direction: 1};
+			var response = backend.addDaysToPlanet(mockedPlanet, 1);
+
+			assert.isObject(response)
+			assert.propertyVal(response, 'position', 5);
+		});
+
+		it('should return postion = 355 for a planet positioned in 0, moving at a 5 deg/day speed and counterClockwise direction after a single day passed', function() {
+			var mockedPlanet = {position: 0, speed: 5, direction: -1};
+			var response = backend.addDaysToPlanet(mockedPlanet, 1);
+
+			assert.isObject(response)
+			assert.propertyVal(response, 'position', 355);
 		});
 	});
 });
