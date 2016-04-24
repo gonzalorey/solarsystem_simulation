@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/gonzalorey/solarsystem_simulation/issues"
   },
-  "homepage": "https://github.com/gonzalorey/solarsystem_simulation#readme"
+  "homepage": "https://github.com/gonzalorey/solarsystem_simulation#readme",
+  "dependencies": {
+    "supertest": "^1.2.0"
+  }
 }
