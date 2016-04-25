@@ -108,11 +108,19 @@ describe('utils', function() {
 		});
 	});
 
-	describe('containsZero', function() {
-		it('should return true when the zero coordinate is contained between the coordinates received', function() {			
-			var coordinates = [{x: 0, y: 0}, {x: 10, y: 10}, {x: 0, y: 10}];
+	describe('coordinatesContainPoint', function() {
+		it('should return \'true\' when the point is contained between the coordinates received', function() {			
+			var coordinates = [{x: 1, y: 1}, {x: 4, y: 2}, {x: 2, y: 7}];
+			var point = {x: 2, y: 3};
 
-			assert.equal(utils.containsZero(coordinates), true);
+			assert.equal(utils.coordinatesContainPoint(coordinates, point), true);
+		});
+
+		it('should return \'false\' when the point is not contained between the coordinates received', function() {			
+			var coordinates = [{x: 1, y: 1}, {x: 4, y: 2}, {x: 2, y: 7}];
+			var point = {x: 1.5, y: 5};
+
+			assert.equal(utils.coordinatesContainPoint(coordinates, point), false);
 		});
 	});
 });

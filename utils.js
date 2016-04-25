@@ -36,6 +36,23 @@ exports.getTriangleSurface = function(base, height) {
 	return base * height / 2;
 };
 
-exports.containsZero = function(coordinates) {
-	return false;
+exports.coordinatesContainPoint = function(coordinates, point) {
+	// used the method in http://math.stackexchange.com/questions/51326/determining-if-an-arbitrary-point-lies-inside-a-triangle-defined-by-three-points
+
+	// move the points to 0, 0 (even the origin)
+	var A = {x: point.x, y: point.y};
+	var B = {x: coordinates[1].x - coordinates[0].x, y: coordinates[1].y - coordinates[0].y};
+	var C = {x: coordinates[2].x - coordinates[0].x, y: coordinates[2].y - coordinates[0].y};
+	var P = {x: point.x - coordinates[0].x, y: point.y - coordinates[0].y};
+
+	// the scalar
+	var d = (B.x*C.y - B.y*C.x);
+
+	// the weights 
+	var wA = (P.x*(B.y - C.y) + P.y*(C.x - B.x) + B.x*C.y - C.x*B.y)/d;
+	var wB = (P.x*C.y - P.y*C.x)/d;
+	var wC = (P.y*B.x - P.x*B.y)/d;
+
+	// all weights must be between 0 and 1 
+	return (wA >= 0 && wA <= 1) && (wB >= 0 && wB <= 1) && (wC >= 0 && wC <= 1);
 };
