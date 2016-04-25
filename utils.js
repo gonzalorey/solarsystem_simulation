@@ -28,12 +28,21 @@ exports.getCoordinates = function(angle, hypotenuse) {
 	return {x: x, y: y};
 };
 
-exports.getDistance = function(pointA, pointB) {
-	return math.sqrt(math.pow(pointB.x - pointA.x, 2) + math.pow(pointB.y - pointA.y, 2))
+exports.getSurface = function(coordinates) {
+	var base = this.getDistance(coordinates[0], coordinates[1]);
+	console.log('base:%s', base);
+
+	var baseMidpoint = {x: (coordinates[0].x + coordinates[1].x)/2, y: (coordinates[0].y + coordinates[1].y)/2};
+	console.log('midpoint:', baseMidpoint);
+
+	var height = this.getDistance(coordinates[2], baseMidpoint);
+	console.log('height:%s', height);
+
+	return (base * height) / 2;
 };
 
-exports.getTriangleSurface = function(base, height) {
-	return base * height / 2;
+exports.getDistance = function(pointA, pointB) {
+	return math.sqrt(math.pow(pointB.x - pointA.x, 2) + math.pow(pointB.y - pointA.y, 2))
 };
 
 exports.coordinatesContainPoint = function(coordinates, point) {

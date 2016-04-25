@@ -1,5 +1,3 @@
-var math = require('mathjs');
-
 var utils = require('./utils.js');
 
 const INITIAL_POSITION = 360;
@@ -54,22 +52,8 @@ exports.isDraught = function(planets) {
 };
 
 exports.isRainy = function(planets) {
-	var coordinates = getCoordinates(planets);		// needed to be computed for two methods
-	var surface = getSurface(planets, coordinates);
-
-	return surface > 0 && utils.containsZero(coordinates);
-};
-
-function isOptimal(planets) {
-	return false;
-}
-
-function getSurface(planets, coordinates) {
-	// get the base and height of the triangle
-	var base = utils.getDistance(coordinates[0], coordinates[1]);
-	var height = utils.getDistance(coordinates[0], coordinates[2]) * math.sin((INITIAL_POSITION + planets[2].position - planets[0].position) % 360);
-
-	return utils.getTriangleSurface(base, height);
+	var coordinates = getCoordinates(planets);
+	return utils.getSurface(coordinates) > 0 && utils.coordinatesContainPoint(coordinates, {x: 0, y: 0});
 };
 
 function getCoordinates(planets) {
@@ -80,4 +64,8 @@ function getCoordinates(planets) {
 	}
 
 	return coordinates;
+}
+
+function isOptimal(planets) {
+	return false;
 }
