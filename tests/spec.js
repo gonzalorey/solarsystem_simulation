@@ -2,8 +2,8 @@ var request = require('supertest');
 var assert = require('chai').assert;
 var math = require('mathjs');
 
-var backend = require('./backend.js');
-var utils = require('./utils.js');
+var backend = require('../server/backend.js');
+var utils = require('../server/utils.js');
 
 // server tests
 // ===================================================================================
@@ -12,7 +12,7 @@ describe('loading express', function () {
 	var server;
 
 	beforeEach(function () {
-		server = require('./server');
+		server = require('../server/server.js');
 	});
 
 	afterEach(function () {

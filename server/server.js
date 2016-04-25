@@ -11,7 +11,7 @@ app.get('/', function (req, res) {
 var server = app.listen(3000, function () {
 	var port = server.address().port;
 
-	//console.log('Example app listening on port %s!', port);
+	console.log('Example app listening on port %s!', port);
 });
 
 module.exports = server;
@@ -23,7 +23,6 @@ app.get('/weather', function (req, res) {
 		var days = req.query.day;
 		var simulatedPlanets = [];
 
-		console.log(backend.planets[0]);
 		for(i = 0; i < backend.planets.length; i++) {
 			simulatedPlanets.push(backend.addDaysToPlanet(backend.planets[i], days)); 
 		}
