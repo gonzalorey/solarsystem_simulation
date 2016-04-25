@@ -56,6 +56,11 @@ exports.isRainy = function(planets) {
 	return utils.getSurface(coordinates) > 0 && utils.coordinatesContainPoint(coordinates, {x: 0, y: 0});
 };
 
+exports.isOptimal = function(planets) {
+	var coordinates = getCoordinates(planets);
+	return utils.getSurface(coordinates) == 0 && !utils.coordinatesContainPoint(coordinates, {x: 0, y: 0});
+}
+
 function getCoordinates(planets) {
 	var coordinates = [];
 
@@ -64,8 +69,4 @@ function getCoordinates(planets) {
 	}
 
 	return coordinates;
-}
-
-function isOptimal(planets) {
-	return false;
 }
