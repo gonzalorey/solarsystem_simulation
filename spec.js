@@ -70,7 +70,7 @@ describe('planet operations', function() {
 
 	describe('isRainy', function() {
 		it('should return \'true\' when the planets describe a surface greater than 0 and contains the (0,0) coordinate', function() {
-			var planets = [{position: 0, distance: 10}, {position: 90, distance: 30}, {position: 190, distance: 50}];
+			var planets = [{position: 0, distance: 5}, {position: 180, distance: 5}, {position: 90, distance: 10}];
 
 			assert.equal(backend.isRainy(planets), true);
 		});
@@ -108,7 +108,7 @@ describe('utils', function() {
 
 	describe('getSurface', function() {
 		it('should return the correct surface when received a set of coordinates', function() {
-			var coordinates = [{x: 5, y: 0}, {x: 0, y: 10}, {x: -5, y: 0}];
+			var coordinates = [{x: 5, y: 0}, {x: -5, y: 0}, {x: 0, y: 10}];
 
 			assert.equal(utils.getSurface(coordinates), 50);
 		});
@@ -118,6 +118,13 @@ describe('utils', function() {
 		it('should return \'true\' when the point is contained between the coordinates received', function() {			
 			var coordinates = [{x: 1, y: 1}, {x: 4, y: 2}, {x: 2, y: 7}];
 			var point = {x: 2, y: 3};
+
+			assert.equal(utils.coordinatesContainPoint(coordinates, point), true);
+		});
+
+		it('should return \'true\' when the point is contained between the coordinates received', function() {			
+			var coordinates = [{x: 5, y: 0}, {x: -5, y: 0}, {x: 0, y: 10}];
+			var point = {x: 0, y: 0};
 
 			assert.equal(utils.coordinatesContainPoint(coordinates, point), true);
 		});
