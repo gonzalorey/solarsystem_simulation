@@ -22,8 +22,8 @@ function toRadians(degrees) {
 exports.getCoordinates = function(angle, hypotenuse) {
 	// operations based on a rectangle triangle
 
-	var x = hypotenuse * math.sin(math.PI/2 - toRadians(angle % 180));	// divided by sin(PI/2) = 1
-	var y = hypotenuse * math.sin(toRadians(angle % 180));			// divided by sin(PI/2) = 1
+	var x = hypotenuse * math.sin(math.PI/2 - toRadians(angle % 180)) * ((angle > 90 && angle < 270)? -1:1);	// divided by sin(PI/2) = 1
+	var y = hypotenuse * math.sin(toRadians(angle % 180)) * ((angle > 180 && angle < 360)? -1:1);			// divided by sin(PI/2) = 1
 
 	return {x: x, y: y};
 };

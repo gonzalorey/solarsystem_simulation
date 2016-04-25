@@ -63,8 +63,6 @@ function getCoordinates(planets) {
 		coordinates.push(utils.getCoordinates(planets[i].position, planets[i].distance));
 	}
 
-	console.log('coordinates:', coordinates);
-
 	return coordinates;
 }
 

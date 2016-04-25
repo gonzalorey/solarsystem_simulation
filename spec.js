@@ -74,6 +74,18 @@ describe('planet operations', function() {
 
 			assert.equal(backend.isRainy(planets), true);
 		});
+
+		it('should return \'false\' when the planets describe a surface of 0', function() {
+			var planets = [{position: 0, distance: 5}, {position: 180, distance: 5}, {position: 180, distance: 10}];
+
+			assert.equal(backend.isRainy(planets), false);
+		});
+
+		it('should return \'false\' when the planets don\'t contain the (0,0) coordinate', function() {
+			var planets = [{position: 0, distance: 5}, {position: 45, distance: 10}, {position: 90, distance: 5}];
+
+			assert.equal(backend.isRainy(planets), false);
+		});
 	});
 });
 
@@ -81,15 +93,32 @@ describe('planet operations', function() {
 // ===================================================================================
 describe('utils', function() {
 	describe('getCoordinates', function() {
-		it('should return an object with the properties x and y when the angle 45 degrees with a hypotenuse of 10', function() {			
-			var angle = 45;		
-			var hypotenuse = 10;			
-			var response = utils.getCoordinates(angle, hypotenuse);
+		it('should return the coordinate (5, 0) when the angle is 0 degrees and the hypotenuse 5', function() {			
+			var response = utils.getCoordinates(0, 5);
 
-			assert.isObject(response);
-			assert.property(response, 'x');
-			assert.property(response, 'y');
-			assert.equal(response.x, response.y);	// when its a rectangle triangle, and the angle is 45, the sides (or coordinates) are equal
+			assert.propertyVal(response, 'x', 5);
+			assert.propertyVal(response, 'y', 0);
+		});
+
+		it('should return the coordinate (-5, 0) when the angle is 180 degrees and the hypotenuse 5', function() {			
+			var response = utils.getCoordinates(180, 5);
+
+			assert.propertyVal(response, 'x', -5);
+			assert.propertyVal(response, 'y', 0);
+		});
+
+		it('should return the coordinate (0, 5) when the angle is 90 degrees and the hypotenuse 5', function() {			
+			var response = utils.getCoordinates(90, 5);
+
+			assert.propertyVal(response, 'x', 0);
+			assert.propertyVal(response, 'y', 5);
+		});
+
+		it('should return the coordinate (0, -5) when the angle is 270 degrees and the hypotenuse 5', function() {			
+			var response = utils.getCoordinates(270, 5);
+
+			assert.propertyVal(response, 'x', 0);
+			assert.propertyVal(response, 'y', -5);
 		});
 	});
 
