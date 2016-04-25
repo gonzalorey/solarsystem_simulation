@@ -11,7 +11,7 @@ app.get('/', function (req, res) {
 var server = app.listen(3000, function () {
 	var port = server.address().port;
 
-	console.log('Example app listening on port %s!', port);
+	console.log('Listening on port %s!', port);
 });
 
 module.exports = server;
@@ -30,8 +30,8 @@ app.get('/weather', function (req, res) {
 		var response = {};
 		response.planets = simulatedPlanets;
 		response.isDraught = backend.isDraught(simulatedPlanets);
-		response.isRainy = 'NOT YET READY';
-		response.isOptimal = 'NOT YET READY';
+		response.isRainy = backend.isRainy(simulatedPlanets);
+		response.isOptimal = backend.isOptimal(simulatedPlanets);
 
 		res.send(response);
 	}

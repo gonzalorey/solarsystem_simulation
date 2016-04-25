@@ -25,11 +25,11 @@ describe('loading express', function () {
 			.expect(200, done);
 	});
 
-	// it('404 everything else', function testPath(done) {
-	// 	request(server)
-	// 		.get('/foo/bar')
-	// 		.expect(404, done);
-	// });
+	it('responds the planets and their positions on a specified day', function testPath(done) {
+		request(server)
+			.get('/weather?day=15')
+			.expect(200, done);
+	});
 });
 
 // backend tests
@@ -105,6 +105,21 @@ describe('planet operations', function() {
 			var planets = [{position: 0, distance: 5}, {position: 0, distance: 5}, {position: 90, distance: 5}];
 
 			assert.equal(backend.isOptimal(planets), true);
+		});
+	});
+
+	describe('simulateDays', function() {
+		it('should return an array with the draught, rain and optimal predictions for every day requested', function() {
+			var planets = [{position: 0, distance: 5}, {position: 0, distance: 5}, {position: 0, distance: 5}];
+			var days = 10;
+
+			var response = backend.simulateDays(planets, days);
+
+			assert.lengthOf(response, days, 'The size of the array is %d', days);
+			assert.property(response, 'day');
+			assert.property(response, 'isDraught');
+			assert.property(response, 'isRainy');
+			assert.property(response, 'isOptimal');
 		});
 	});
 });

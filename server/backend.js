@@ -47,6 +47,14 @@ exports.addDaysToPlanet = function(planet, days) {
 	return copiedPlanet;
 };
 
+function addDaysToManyPlanets(planets, days) {
+	var p1 = addDaysToPlanet(planets[0], days);
+	var p2 = addDaysToPlanet(planets[1], days);
+	var p3 = addDaysToPlanet(planets[2], days);
+
+	return [p1, p2, p3];
+}
+
 exports.isDraught = function(planets) {
 	return (planets[0].position % 180) == (planets[1].position % 180) && (planets[1].position % 180) == (planets[2].position % 180);
 };
@@ -59,7 +67,28 @@ exports.isRainy = function(planets) {
 exports.isOptimal = function(planets) {
 	var coordinates = getCoordinates(planets);
 	return utils.getSurface(coordinates) == 0 && !utils.coordinatesContainPoint(coordinates, {x: 0, y: 0});
-}
+};
+
+exports.maxRainPeriod = function(planets) {
+	// TODO: Implement
+	return false;
+};
+
+exports.simulateDays = function(planets, days) {
+	var simulation = [];
+
+	for (i = 0; i < days; i++) {
+		var auxPlanets = addDaysToManyPlanets(planets[i], i);
+		
+		var isDraught = isDraught(auxPlanets);
+		var isRainy = isRainy(auxPlanets);
+		var isOptimal = isOptimal(auxPlanets);
+
+		simulation.push({day: i, isDraught: isDraught, isRainy: isRainy, isOptimal: isOptimal});
+	}
+
+	return simulation;
+};
 
 function getCoordinates(planets) {
 	var coordinates = [];
