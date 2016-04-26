@@ -25,11 +25,17 @@ describe('loading express', function () {
 			.expect(200, done);
 	});
 
-	// it('404 everything else', function testPath(done) {
-	// 	request(server)
-	// 		.get('/foo/bar')
-	// 		.expect(404, done);
-	// });
+	it('responds the planets and their positions on a specified day', function testPath(done) {
+		request(server)
+			.get('/weather?day=15')
+			.expect(200, done);
+	});
+
+	it('responds a simulation array for the requested amount of days', function testPath(done) {
+		request(server)
+			.get('/simulation?days=15')
+			.expect(200, done);
+	});
 });
 
 // backend tests
@@ -50,23 +56,23 @@ describe('planet operations', function() {
 		});
 	});
 
-	describe('addDaysToPlanet', function() {
-		it('should return postion = 5 for a planet positioned in 0, moving at a 5 deg/day speed and clockwise direction after a single day passed', function() {
-			var planet = {position: 0, speed: 5, direction: 1};
-			var response = backend.addDaysToPlanet(planet, 1);
+	// describe('addDaysToPlanet', function() {
+	// 	it('should return postion = 5 for a planet positioned in 0, moving at a 5 deg/day speed and clockwise direction after a single day passed', function() {
+	// 		var planet = {position: 0, speed: 5, direction: 1};
+	// 		var response = backend.addDaysToPlanet(planet, 1);
 
-			assert.isObject(response);
-			assert.propertyVal(response, 'position', 5);
-		});
+	// 		assert.isObject(response);
+	// 		assert.propertyVal(response, 'position', 5);
+	// 	});
 
-		it('should return postion = 355 for a planet positioned in 0, moving at a 5 deg/day speed and counter clockwise direction after a single day passed', function() {
-			var planet = {position: 0, speed: 5, direction: -1};
-			var response = backend.addDaysToPlanet(planet, 1);
+	// 	it('should return postion = 355 for a planet positioned in 0, moving at a 5 deg/day speed and counter clockwise direction after a single day passed', function() {
+	// 		var planet = {position: 0, speed: 5, direction: -1};
+	// 		var response = backend.addDaysToPlanet(planet, 1);
 
-			assert.isObject(response);
-			assert.propertyVal(response, 'position', 355);
-		});
-	});
+	// 		assert.isObject(response);
+	// 		assert.propertyVal(response, 'position', 355);
+	// 	});
+	// });
 
 	describe('isRainy', function() {
 		it('should return \'true\' when the planets describe a surface greater than 0 and contains the (0,0) coordinate', function() {
@@ -105,6 +111,21 @@ describe('planet operations', function() {
 			var planets = [{position: 0, distance: 5}, {position: 0, distance: 5}, {position: 90, distance: 5}];
 
 			assert.equal(backend.isOptimal(planets), true);
+		});
+	});
+
+	describe('simulateDays', function() {
+		it('should return an array with the draught, rain and optimal predictions for every day requested', function() {
+			var planets = [{position: 0, distance: 5}, {position: 0, distance: 5}, {position: 0, distance: 5}];
+			var days = 10;
+
+			var response = backend.simulateDays(planets, days);
+
+			assert.lengthOf(response, days);
+			assert.property(response[0], 'day');
+			assert.property(response[0], 'isDraught');
+			assert.property(response[0], 'isRainy');
+			assert.property(response[0], 'isOptimal');
 		});
 	});
 });
