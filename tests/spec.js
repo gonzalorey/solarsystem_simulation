@@ -56,23 +56,23 @@ describe('planet operations', function() {
 		});
 	});
 
-	// describe('addDaysToPlanet', function() {
-	// 	it('should return postion = 5 for a planet positioned in 0, moving at a 5 deg/day speed and clockwise direction after a single day passed', function() {
-	// 		var planet = {position: 0, speed: 5, direction: 1};
-	// 		var response = backend.addDaysToPlanet(planet, 1);
+	describe('addDaysToPlanet', function() {
+		it('should return postion = 5 for a planet positioned in 0, moving at a 5 deg/day speed and clockwise direction after a single day passed', function() {
+			var planet = {position: 0, speed: 5, direction: 1};
+			var response = backend.addDaysToPlanet(planet, 1);
 
-	// 		assert.isObject(response);
-	// 		assert.propertyVal(response, 'position', 5);
-	// 	});
+			assert.isObject(response);
+			assert.propertyVal(response, 'position', 5);
+		});
 
-	// 	it('should return postion = 355 for a planet positioned in 0, moving at a 5 deg/day speed and counter clockwise direction after a single day passed', function() {
-	// 		var planet = {position: 0, speed: 5, direction: -1};
-	// 		var response = backend.addDaysToPlanet(planet, 1);
+		it('should return postion = 355 for a planet positioned in 0, moving at a 5 deg/day speed and counter clockwise direction after a single day passed', function() {
+			var planet = {position: 0, speed: 5, direction: -1};
+			var response = backend.addDaysToPlanet(planet, 1);
 
-	// 		assert.isObject(response);
-	// 		assert.propertyVal(response, 'position', 355);
-	// 	});
-	// });
+			assert.isObject(response);
+			assert.propertyVal(response, 'position', 355);
+		});
+	});
 
 	describe('isRainy', function() {
 		it('should return \'true\' when the planets describe a surface greater than 0 and contains the (0,0) coordinate', function() {

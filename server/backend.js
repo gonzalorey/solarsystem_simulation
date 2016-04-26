@@ -40,7 +40,7 @@ var starSol = {
 // solar system objects
 var objects = [starSol, planets];
 
-function addDaysToPlanet(planet, days) {
+exports.addDaysToPlanet = function(planet, days) {
 	var copiedPlanet = utils.clone(planet);
 	copiedPlanet.position = (INITIAL_POSITION + planet.position + planet.speed * days * planet.direction) % 360;
 
@@ -48,9 +48,9 @@ function addDaysToPlanet(planet, days) {
 };
 
 exports.addDaysToManyPlanets = function(planets, days) {
-	var p1 = addDaysToPlanet(planets[0], days);
-	var p2 = addDaysToPlanet(planets[1], days);
-	var p3 = addDaysToPlanet(planets[2], days);
+	var p1 = exports.addDaysToPlanet(planets[0], days);
+	var p2 = exports.addDaysToPlanet(planets[1], days);
+	var p3 = exports.addDaysToPlanet(planets[2], days);
 
 	return [p1, p2, p3];
 };
