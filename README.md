@@ -3,13 +3,13 @@
 This is a project based in Node.js with the purpose of just fiddling a little with the language, try a few things and have fun.
 
 ### Install the project
-$> npm install
+    $> npm install
 
 ### Run the tests
-$> mocha -R spec tests/spec.js 
+    $> mocha -R spec tests/spec.js 
 
 ### Start the project
-$> node server/server.js 
+    $> node server/server.js 
 
 ### How to use
 * Planets service
