@@ -18,14 +18,10 @@ module.exports = server;
 
 app.get('/weather', function (req, res) {
 	if(!req.query.day || !utils.isNumeric(req.query.day)) {
-		res.status(400).send('Missing valid day parameter, insert an integer.');
+		res.status(400).send('Missing valid \'day\' parameter, insert an integer.');
 	} else {
 		var days = req.query.day;
-		var simulatedPlanets = [];
-
-		for(i = 0; i < backend.planets.length; i++) {
-			simulatedPlanets.push(backend.addDaysToPlanet(backend.planets[i], days)); 
-		}
+		var simulatedPlanets = backend.addDaysToManyPlanets(backend.planets, days);
 
 		var response = {};
 		response.planets = simulatedPlanets;
@@ -41,6 +37,13 @@ app.get('/planets', function (req, res) {
 	res.send(planets);
 });
 
-app.get('/objects', function (req, res) {
-	res.send(objects);
+app.get('/simulation', function (req, res) {
+	if(!req.query.days || !utils.isNumeric(req.query.days)) {
+		res.status(400).send('Missing valid \'days\' parameter, insert an integer.');
+	} else {
+		var days = req.query.days;
+		var simulation = backend.simulateDays(backend.planets, days);
+
+		res.send(simulation);
+	}
 });

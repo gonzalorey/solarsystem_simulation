@@ -40,20 +40,20 @@ var starSol = {
 // solar system objects
 var objects = [starSol, planets];
 
-exports.addDaysToPlanet = function(planet, days) {
-	var copiedPlanet = utils.clone(planet);   
+function addDaysToPlanet(planet, days) {
+	var copiedPlanet = utils.clone(planet);
 	copiedPlanet.position = (INITIAL_POSITION + planet.position + planet.speed * days * planet.direction) % 360;
 
 	return copiedPlanet;
 };
 
-function addDaysToManyPlanets(planets, days) {
+exports.addDaysToManyPlanets = function(planets, days) {
 	var p1 = addDaysToPlanet(planets[0], days);
 	var p2 = addDaysToPlanet(planets[1], days);
 	var p3 = addDaysToPlanet(planets[2], days);
 
 	return [p1, p2, p3];
-}
+};
 
 exports.isDraught = function(planets) {
 	return (planets[0].position % 180) == (planets[1].position % 180) && (planets[1].position % 180) == (planets[2].position % 180);
@@ -77,14 +77,15 @@ exports.maxRainPeriod = function(planets) {
 exports.simulateDays = function(planets, days) {
 	var simulation = [];
 
-	for (i = 0; i < days; i++) {
-		var auxPlanets = addDaysToManyPlanets(planets[i], i);
+	for (var i = 0; i < days; i++) {
+		var auxPlanets = exports.addDaysToManyPlanets(planets, i);
 		
-		var isDraught = isDraught(auxPlanets);
-		var isRainy = isRainy(auxPlanets);
-		var isOptimal = isOptimal(auxPlanets);
+		var isDraught = exports.isDraught(auxPlanets);
+		var isRainy = exports.isRainy(auxPlanets);
+		var isOptimal = exports.isOptimal(auxPlanets);
+		var daySimulation = {day: i, isDraught: isDraught, isRainy: isRainy, isOptimal: isOptimal};
 
-		simulation.push({day: i, isDraught: isDraught, isRainy: isRainy, isOptimal: isOptimal});
+		simulation.push(daySimulation);
 	}
 
 	return simulation;
@@ -93,7 +94,7 @@ exports.simulateDays = function(planets, days) {
 function getCoordinates(planets) {
 	var coordinates = [];
 
-	for(i = 0; i < planets.length; i++) {
+	for(var i = 0; i < planets.length; i++) {
 		coordinates.push(utils.getCoordinates(planets[i].position, planets[i].distance));
 	}
 
