@@ -2,6 +2,7 @@ var express = require('express');
 
 var utils = require('./utils.js');
 var backend = require('./backend.js');
+var db = require('./db.js');
 
 var app = express();
 app.get('/', function (req, res) {
@@ -10,31 +11,45 @@ app.get('/', function (req, res) {
 
 var server = app.listen((process.env.PORT || 3000), function () {
 	var port = server.address().port;
-
 	console.log('Listening on port %s!', port);
+
+	db.startConnection();
 });
 
 module.exports = server;
+
+app.get('/planets', function (req, res) {
+	res.send(planets);
+});
 
 app.get('/weather', function (req, res) {
 	if(!req.query.day || !utils.isNumeric(req.query.day)) {
 		res.status(400).send('Missing valid \'day\' parameter, insert an integer.');
 	} else {
-		var days = req.query.day;
-		var simulatedPlanets = backend.addDaysToManyPlanets(backend.planets, days);
+		var day = req.query.day;
 
-		var response = {};
-		response.planets = simulatedPlanets;
-		response.isDraught = backend.isDraught(simulatedPlanets);
-		response.isRainy = backend.isRainy(simulatedPlanets);
-		response.isOptimal = backend.isOptimal(simulatedPlanets);
+		db.getForecast(day, function(docs) {
+			if(docs.length > 0) {
+				console.log('Successfuly fetched');
+				res.send(docs[0]);
+			} else {
+				console.log('wasn\'t in the DB, building the simulation');
 
-		res.send(response);
+				var simulatedPlanets = backend.addDaysToManyPlanets(backend.planets, day);
+
+				var forecast = {};
+				forecast.day = day;
+				forecast.planets = simulatedPlanets;
+				forecast.isDraught = backend.isDraught(simulatedPlanets);
+				forecast.isRainy = backend.isRainy(simulatedPlanets);
+				forecast.isOptimal = backend.isOptimal(simulatedPlanets);
+
+				db.saveForecast(forecast);
+
+				res.send(forecast);
+			}
+		});		
 	}
-});
-
-app.get('/planets', function (req, res) {
-	res.send(planets);
 });
 
 app.get('/simulation', function (req, res) {

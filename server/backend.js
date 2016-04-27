@@ -1,4 +1,5 @@
 var utils = require('./utils.js');
+var db = require('./db.js');
 
 const INITIAL_POSITION = 360;
 
