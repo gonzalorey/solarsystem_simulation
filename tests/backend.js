@@ -24,7 +24,7 @@ describe('planet operations', function() {
 
 			var response = backend.simulateDays(days);
 
-			assert.lengthOf(response, days);
+			assert.lengthOf(response, days + 1);	// considering the 0 day, as well as the 10th day
 			assert.property(response[0], 'day');
 			assert.property(response[0], 'condition');
 		});
