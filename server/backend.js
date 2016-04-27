@@ -68,7 +68,7 @@ function getWeatherFromDB(day, callback) {
 exports.simulateDays = function(days) {
 	var simulation = [];
 
-	for (var i = 0; i < days; i++) {
+	for (var i = 0; i <= days; i++) {
 		computeWeather(i, function(weather) {
 			simulation.push(weather);			
 
