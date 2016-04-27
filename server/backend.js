@@ -1,4 +1,5 @@
 var utils = require('./utils.js');
+var db = require('./db.js');
 
 const INITIAL_POSITION = 360;
 
@@ -28,17 +29,56 @@ var planetVulcano = {
 
 // planets of the solar system
 var planets = [planetFarengi, planetBetasoide, planetVulcano];
-exports.planets = planets;
 
-var starSol = {
-	name: 'Sol',
-	speed: 0,
-	direction: 1,   // clockwise
-	distance: 0
+exports.getWeather = function(day, callback) {
+	if(process.env.READ_FROM_DB == 'true') {
+		getWeatherFromDB(day, callback);
+	} else {
+		computeWeather(day, callback);
+	}
 };
 
-// solar system objects
-var objects = [starSol, planets];
+function computeWeather(day, callback) {
+	var simulatedPlanets = exports.addDaysToManyPlanets(planets, day);
+
+	var weather = {};
+	weather.day = day;
+
+	// TODO: instead of calculating it here, it should be fetched from the DB
+	weather.condition = 
+		exports.isDraught(simulatedPlanets)
+			? "Draught" 
+			: ( exports.isRainy(simulatedPlanets)
+				? "Rainy" 
+				: ( exports.isOptimal(simulatedPlanets)
+					? "Optimal" 
+					: "Normal"
+				)
+			);
+
+	callback(weather);
+}
+
+function getWeatherFromDB(day, callback) {
+	db.getForecast(day, function(docs){
+		callback(docs);
+	});
+}
+
+exports.simulateDays = function(days) {
+	var simulation = [];
+
+	for (var i = 0; i <= days; i++) {
+		computeWeather(i, function(weather) {
+			simulation.push(weather);			
+
+			// store in the DB
+			db.saveForecast(weather);
+		});
+	}
+
+	return simulation;
+};
 
 exports.addDaysToPlanet = function(planet, days) {
 	var copiedPlanet = utils.clone(planet);
@@ -72,23 +112,6 @@ exports.isOptimal = function(planets) {
 exports.maxRainPeriod = function(planets) {
 	// TODO: Implement
 	return false;
-};
-
-exports.simulateDays = function(planets, days) {
-	var simulation = [];
-
-	for (var i = 0; i < days; i++) {
-		var auxPlanets = exports.addDaysToManyPlanets(planets, i);
-		
-		var isDraught = exports.isDraught(auxPlanets);
-		var isRainy = exports.isRainy(auxPlanets);
-		var isOptimal = exports.isOptimal(auxPlanets);
-		var daySimulation = {day: i, isDraught: isDraught, isRainy: isRainy, isOptimal: isOptimal};
-
-		simulation.push(daySimulation);
-	}
-
-	return simulation;
 };
 
 function getCoordinates(planets) {
