@@ -13,7 +13,17 @@ var server = app.listen((process.env.PORT || 3000), function () {
 	var port = server.address().port;
 	console.log('Listening on port %s!', port);
 
+	// start the connection to the DB
 	db.startConnection();
+});
+
+process.on('SIGINT', function() {
+    console.log("Closing the server...");
+
+	// start the connection to the DB
+	db.closeConnection();
+
+    process.exit();
 });
 
 module.exports = server;
