@@ -22,15 +22,15 @@ describe('loading express', function () {
 			.expect(200, done);
 	});
 
-	it('responds the planets and their positions on a specified day', function testPath(done) {
-		request(server)
-			.get('/weather?day=15')
-			.expect(200, done);
-	});
+	// it('responds the planets and their positions on a specified day', function testPath(done) {
+	// 	request(server)
+	// 		.get('/weather?day=15')
+	// 		.expect(200, done);
+	// });
 
-	it('responds a simulation array for the requested amount of days', function testPath(done) {
-		request(server)
-			.get('/simulation?days=15')
-			.expect(200, done);
-	});
+	// it('responds a simulation array for the requested amount of days', function testPath(done) {
+	// 	request(server)
+	// 		.get('/simulation?days=15')
+	// 		.expect(200, done);
+	// });
 });

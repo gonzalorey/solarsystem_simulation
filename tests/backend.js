@@ -10,11 +10,11 @@ describe('planet operations', function() {
 		it('should return the weather condition for a specified day', function() {
 			var day = 13;
 
-			var weather = backend.getWeather(day);
-
-			assert.property(weather, 'day');
-			assert.propertyVal(weather, 'day', day);
-			assert.property(weather, 'condition');
+			backend.getWeather(day, function(weather) {
+				assert.property(weather, 'day');
+				assert.propertyVal(weather, 'day', day);
+				assert.property(weather, 'condition');				
+			});
 		});
 	});	
 

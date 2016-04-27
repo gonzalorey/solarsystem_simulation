@@ -30,7 +30,15 @@ var planetVulcano = {
 // planets of the solar system
 var planets = [planetFarengi, planetBetasoide, planetVulcano];
 
-exports.getWeather = function(day) {
+exports.getWeather = function(day, callback) {
+	if(process.env.READ_FROM_DB == 'true') {
+		getWeatherFromDB(day, callback);
+	} else {
+		computeWeather(day, callback);
+	}
+};
+
+function computeWeather(day, callback) {
 	var simulatedPlanets = exports.addDaysToManyPlanets(planets, day);
 
 	var weather = {};
@@ -48,14 +56,25 @@ exports.getWeather = function(day) {
 				)
 			);
 
-	return weather;
-};
+	callback(weather);
+}
+
+function getWeatherFromDB(day, callback) {
+	db.getForecast(day, function(docs){
+		callback(docs);
+	});
+}
 
 exports.simulateDays = function(days) {
 	var simulation = [];
 
 	for (var i = 0; i < days; i++) {
-		simulation.push(exports.getWeather(i));
+		computeWeather(i, function(weather) {
+			simulation.push(weather);			
+
+			// store in the DB
+			db.saveForecast(weather);
+		});
 	}
 
 	return simulation;

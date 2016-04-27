@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 var express = require('express');
 
 var utils = require('./utils.js');
@@ -37,9 +39,13 @@ app.get('/weather', function (req, res) {
 		res.status(400).send('Missing valid \'day\' parameter, insert an integer.');
 	} else {
 		var day = req.query.day;
-		var weather = backend.getWeather(day);
-
-		res.send(weather);
+		backend.getWeather(day, function(weather) {
+			if(weather.length > 0) {
+				res.send(weather);
+			} else {
+				res.status(404).send('No valid data for the requested day.');
+			}
+		});
 	}
 });
 
