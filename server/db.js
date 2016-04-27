@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
-// var mongodbUri = 'mongodb://user:pass@host:port/db';
-var mongodbUri = 'mongodb://localhost/test'
+var mongodbUri = 'mongodb://gonzalorey:energumen@ds021681.mlab.com:21681/heroku_s8zhr3d3';
+// var mongodbUri = 'mongodb://localhost/test'
 
 // reference to the database connection
 var db;
