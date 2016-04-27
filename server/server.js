@@ -37,28 +37,9 @@ app.get('/weather', function (req, res) {
 		res.status(400).send('Missing valid \'day\' parameter, insert an integer.');
 	} else {
 		var day = req.query.day;
+		var weather = backend.getWeather(day);
 
-		db.getForecast(day, function(docs) {
-			if(docs.length > 0) {
-				console.log('Successfuly fetched');
-				res.send(docs[0]);
-			} else {
-				console.log('wasn\'t in the DB, building the simulation');
-
-				var simulatedPlanets = backend.addDaysToManyPlanets(backend.planets, day);
-
-				var forecast = {};
-				forecast.day = day;
-				forecast.planets = simulatedPlanets;
-				forecast.isDraught = backend.isDraught(simulatedPlanets);
-				forecast.isRainy = backend.isRainy(simulatedPlanets);
-				forecast.isOptimal = backend.isOptimal(simulatedPlanets);
-
-				db.saveForecast(forecast);
-
-				res.send(forecast);
-			}
-		});		
+		res.send(weather);
 	}
 });
 
@@ -67,7 +48,7 @@ app.get('/simulation', function (req, res) {
 		res.status(400).send('Missing valid \'days\' parameter, insert an integer.');
 	} else {
 		var days = req.query.days;
-		var simulation = backend.simulateDays(backend.planets, days);
+		var simulation = backend.simulateDays(days);
 
 		res.send(simulation);
 	}
