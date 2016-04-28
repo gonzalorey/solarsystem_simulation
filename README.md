@@ -24,7 +24,7 @@ Returns an array with the simulation of the solar system for each day of the req
 At the same time, it will populate the DB with such data.
 
 * Statistics service
-`http://localhost:3000/simulation/statstics?option=<option>`
+`http://localhost:3000/simulation/statistics?option=<option>`
 
 By providing the desired option, the specific statistic can be obtained. The possible values are **draught**, **rainy**, **maxRainy** and **optimal**.
 
