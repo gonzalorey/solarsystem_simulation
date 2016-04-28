@@ -66,21 +66,23 @@ exports.emptyForecastsCollection = function() {
 	});
 }
 
-exports.countDraughtWeatherConditions = function(callback) {
+exports.countDraughtWeatherConditions = function(done, response) {
 	Forecast.where({"condition": "Draught"}).count(function (err, count) {
 		if (err) return handleError(err);
 
 		console.log('there are %d draught days', count);
-		callback(err, {draughtDays: count});
+		response.draughtDays = count;
+		done(response);
 	});
 }
 
-exports.countRainyWeatherConditions = function(callback) {
+exports.countRainyWeatherConditions = function(done, response) {
 	Forecast.where({"condition": "Rainy"}).count(function (err, count) {
 		if (err) return handleError(err);
 
 		console.log('there are %d rainy days', count);
-		callback(err, {rainyDays: count});
+		response.draughtDays = count;
+		done(response);
 	});
 }
 
