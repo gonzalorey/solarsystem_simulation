@@ -8,8 +8,17 @@ This is a project based in Node.js with the purpose of just fiddling a little wi
 ### Run the tests
     $> mocha -R spec tests/spec.js 
 
-### Start the project
+### Start the project locally
     $> node server/server.js 
+
+### Heroku integration
+
+Install and deploy locally
+	$> heroku local
+
+Deploy to production
+	$> git push heroku master
+	$> heroku open
 
 ### How to use
 * Weather service
@@ -24,8 +33,6 @@ Returns an array with the simulation of the solar system for each day of the req
 At the same time, it will populate the DB with such data.
 
 * Statistics service
-`http://localhost:3000/simulation/statistics?option=<option>`
+`http://localhost:3000/simulation/statistics`
 
-By providing the desired option, the specific statistic can be obtained. The possible values are **draught**, **rainy**, **maxRainy** and **optimal**.
-
-The intended implementation would return all of them at once.
+Returns the statistics taken from the simulation, with the **draughtDays**, **rainyDays** and **maxRainyPeriods**, and the **optimalWeatherDays**.

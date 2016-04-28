@@ -1,3 +1,5 @@
+var ASQ = require("asynquence");
+
 var utils = require('./utils.js');
 var db = require('./db.js');
 
@@ -84,18 +86,23 @@ exports.simulateDays = function(days) {
 	return simulation;
 };
 
-exports.getStatistics = function(callback, option) {
-	if(option == 'draught') {
-		db.countDraughtWeatherConditions(callback);
-	} else if (option == 'rainy') {
-		db.countRainyWeatherConditions(callback);
-	} else if (option == 'maxRainy') {
-		db.getMaxRainyWeatherConditions(callback);
-	} else if (option == 'optimal') {
-		db.countOptimalWeatherConditions(callback);
-	} else {
-		callback('Wrong option provided');
-	}
+exports.getStatistics = function(callback) {
+	ASQ()
+	.gate(
+		db.countDraughtWeatherConditions,
+		db.countRainyWeatherConditions,
+		db.getMaxRainyWeatherConditions,
+		db.countOptimalWeatherConditions)
+	.pipe(function(res1, res2, res3, res4) {
+		var res = {
+			draughtDays: res1, 
+			rainyDays: res2, 
+			maxRainyPeriods: res3,
+			optimalWeatherDays: res4
+		};
+
+		callback(null, res);
+	});
 }
 
 exports.addDaysToPlanet = function(planet, days) {

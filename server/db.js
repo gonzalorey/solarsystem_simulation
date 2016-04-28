@@ -71,8 +71,7 @@ exports.countDraughtWeatherConditions = function(callback) {
 	Forecast.where({"condition": "Draught"}).count(function (err, count) {
 		if (err) return handleError(err, callback);
 
-		console.log('there are %d draught days', count);		
-		callback(null, {draughtDays: count});
+		callback(count);
 	});
 }
 
@@ -80,8 +79,7 @@ exports.countRainyWeatherConditions = function(callback) {
 	Forecast.where({"condition": "Rainy"}).count(function (err, count) {
 		if (err) return handleError(err, callback);
 
-		console.log('there are %d rainy days', count);		
-		callback(null, {rainyDays: count});
+		callback(count);
 	});
 }
 
@@ -99,7 +97,7 @@ exports.getMaxRainyWeatherConditions = function(callback) {
 			}
 		}
 
-		callback(null, response);
+		callback(response);
 	});
 }
 
@@ -107,8 +105,7 @@ exports.countOptimalWeatherConditions = function(callback) {
 	Forecast.where({"condition": "Optimal"}).count(function (err, count) {
 		if (err) return handleError(err, callback);
 
-		console.log('there are %d optimal days', count);		
-		callback(null, {optimalDays: count});
+		callback(count);
 	});
 }
 

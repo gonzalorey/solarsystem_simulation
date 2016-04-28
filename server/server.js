@@ -63,5 +63,5 @@ app.get('/simulation/statistics', function (req, res) {
 		} else {
 			res.send(docs);
 		}
-	}, req.query.option);
+	});
 })
