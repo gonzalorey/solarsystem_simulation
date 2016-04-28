@@ -1,3 +1,5 @@
+var async = require('async');
+
 var utils = require('./utils.js');
 var db = require('./db.js');
 
@@ -44,7 +46,6 @@ function computeWeather(day, callback) {
 	var weather = {};
 	weather.day = day;
 
-	// TODO: instead of calculating it here, it should be fetched from the DB
 	weather.condition = 
 		exports.isDraught(simulatedPlanets)
 			? "Draught" 
@@ -56,6 +57,8 @@ function computeWeather(day, callback) {
 				)
 			);
 
+	weather.planetsCoveredSurface = utils.getSurface(getCoordinates(simulatedPlanets));
+
 	callback(weather);
 }
 
@@ -66,6 +69,9 @@ function getWeatherFromDB(day, callback) {
 }
 
 exports.simulateDays = function(days) {
+	// first, wipe out the contents of the collection
+	db.emptyForecastsCollection();
+
 	var simulation = [];
 
 	for (var i = 0; i <= days; i++) {
@@ -79,6 +85,24 @@ exports.simulateDays = function(days) {
 
 	return simulation;
 };
+
+exports.getStatistics = function(callback) {
+	var cDraughts = db.countDraughtWeatherConditions(function(err, docs) {
+		return docs;
+	});
+
+	var cRainy = db.countRainyWeatherConditions(function(err, docs) {
+		return docs;
+	});
+
+	async.parallel(cDraughts, cRainy, function(err, results) {
+		if(err) console.log(err);
+
+		console.log(results);
+
+		callback(results);
+	});
+}
 
 exports.addDaysToPlanet = function(planet, days) {
 	var copiedPlanet = utils.clone(planet);

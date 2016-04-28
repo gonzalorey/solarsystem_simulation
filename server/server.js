@@ -59,3 +59,9 @@ app.get('/simulation', function (req, res) {
 		res.send(simulation);
 	}
 });
+
+app.get('/simulation/statistics', function (req, res) {
+	backend.getStatistics(function(docs) {
+		res.send(docs);		
+	});
+})
