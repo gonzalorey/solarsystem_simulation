@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 
-var mongodbUri = 'mongodb://gonzalorey:energumen@ds021681.mlab.com:21681/heroku_s8zhr3d3';
-// var mongodbUri = 'mongodb://localhost/test'
+var mongodbUri = 'mongodb://dbuser:password@ds021681.mlab.com:21681/heroku_s8zhr3d3';
 
 // reference to the database connection
 var db;
@@ -39,9 +38,6 @@ exports.startConnection = function(){
 
 exports.getForecast = function(day, callback) {
 	Forecast.find({day: day}).exec(function(err, docs) {
-		// console.log('err: ', err);
-		// console.log('docs: ', docs);
-
 		if (err) return handleError(err);
 
 		callback(docs);
