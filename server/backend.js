@@ -1,4 +1,4 @@
-var async = require('async');
+var ASQ = require("asynquence");
 
 var utils = require('./utils.js');
 var db = require('./db.js');
@@ -87,21 +87,16 @@ exports.simulateDays = function(days) {
 };
 
 exports.getStatistics = function(callback) {
-	var cDraughts = db.countDraughtWeatherConditions(function(err, docs) {
-		return docs;
-	});
+	var done = function(res) {
+		console.log(res);
+	}
 
-	var cRainy = db.countRainyWeatherConditions(function(err, docs) {
-		return docs;
-	});
+	var res1, res2;
 
-	async.parallel(cDraughts, cRainy, function(err, results) {
-		if(err) console.log(err);
-
-		console.log(results);
-
-		callback(results);
-	});
+	ASQ({}).all(
+		db.countDraughtWeatherConditions(done, res1),
+		db.countRainyWeatherConditions(done, res2)
+	).val(callback(res1, res2));
 }
 
 exports.addDaysToPlanet = function(planet, days) {
