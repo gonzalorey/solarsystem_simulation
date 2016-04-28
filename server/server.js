@@ -37,7 +37,7 @@ app.get('/weather', function (req, res) {
 		var day = req.query.day;
 		backend.getWeather(day, function(weather) {
 			if(weather.length > 0) {
-				res.send(weather);
+				res.send(weather[0]);
 			} else {
 				res.status(404).send('No valid data for the requested day.');
 			}

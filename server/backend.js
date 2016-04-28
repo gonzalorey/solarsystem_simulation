@@ -64,9 +64,9 @@ function computeWeather(day, callback) {
 
 function getWeatherFromDB(day, callback) {
 	db.getForecast(day, function(docs){
-		var res = {
+		var res = [{
 			day: docs[0].day, 
-			condition: docs[0].condition}; 
+			condition: docs[0].condition}]; 
 
 		callback(res);
 	});
