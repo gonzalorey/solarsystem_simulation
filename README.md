@@ -14,11 +14,13 @@ This is a project based in Node.js with the purpose of just fiddling a little wi
 ### Heroku integration
 
 Install and deploy locally
-	$> heroku local
+
+    $> heroku local
 
 Deploy to production
-	$> git push heroku master
-	$> heroku open
+
+    $> git push heroku master
+    $> heroku open
 
 ### How to use
 * Weather service
