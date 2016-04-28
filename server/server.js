@@ -30,10 +30,6 @@ process.on('SIGINT', function() {
 
 module.exports = server;
 
-app.get('/planets', function (req, res) {
-	res.send(planets);
-});
-
 app.get('/weather', function (req, res) {
 	if(!req.query.day || !utils.isNumeric(req.query.day)) {
 		res.status(400).send('Missing valid \'day\' parameter, insert an integer.');
@@ -61,7 +57,11 @@ app.get('/simulation', function (req, res) {
 });
 
 app.get('/simulation/statistics', function (req, res) {
-	backend.getStatistics(function(docs) {
-		res.send(docs);		
-	});
+	backend.getStatistics(function(err, docs) {
+		if (err) {
+			res.status(400).send(err);
+		} else {
+			res.send(docs);
+		}
+	}, req.query.option);
 })
