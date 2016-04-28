@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 
 var mongodbUri = 'mongodb://dbuser:password@ds021681.mlab.com:21681/heroku_s8zhr3d3';
+var mongodbUriLocal = 'mongodb://localhost/test';
 
 // reference to the database connection
 var db;
@@ -16,7 +17,11 @@ function handleError(err) {
 }
 
 exports.startConnection = function(){
-	mongoose.connect(mongodbUri);
+	if(process.env.DB_INSTANCE == 'local') {
+		mongoose.connect(mongodbUriLocal);
+	} else {
+		mongoose.connect(mongodbUri);		
+	}
 
 	db = mongoose.connection;
 
@@ -27,8 +32,7 @@ exports.startConnection = function(){
 		forecastSchema = mongoose.Schema({
 			day: Number,
 			condition: String,
-			surfaceCovered: Number,
-			maxSurface: Boolean
+			surfaceCovered: Number
 		});
 
 		// Store forecast documents in a collection called "forecasts"
@@ -47,13 +51,38 @@ exports.getForecast = function(day, callback) {
 exports.saveForecast = function(weather) {
 	var forecast = new Forecast({ 
 		day: weather.day, 
-		condition: weather.condition
+		condition: weather.condition,
+		surfaceCovered: weather.planetsCoveredSurface
 	});
 
 	forecast.save(function (err) {
 		if (err) return handleError(err);
 	});
 };
+
+exports.emptyForecastsCollection = function() {
+	Forecast.remove({}, function(err) { 
+		console.log('Forecast collection removed') 
+	});
+}
+
+exports.countDraughtWeatherConditions = function(callback) {
+	Forecast.where({"condition": "Draught"}).count(function (err, count) {
+		if (err) return handleError(err);
+
+		console.log('there are %d draught days', count);
+		callback(err, {draughtDays: count});
+	});
+}
+
+exports.countRainyWeatherConditions = function(callback) {
+	Forecast.where({"condition": "Rainy"}).count(function (err, count) {
+		if (err) return handleError(err);
+
+		console.log('there are %d rainy days', count);
+		callback(err, {rainyDays: count});
+	});
+}
 
 // Only close the connection when your app is terminating
 exports.closeConnection = function() {
