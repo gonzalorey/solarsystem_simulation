@@ -61,3 +61,31 @@ exports.coordinatesContainPoint = function(coordinates, point) {
 	// all weights must be between 0 and 1 
 	return (wA >= 0 && wA <= 1) && (wB >= 0 && wB <= 1) && (wC >= 0 && wC <= 1);
 };
+
+exports.allPointsAllignedButTheSpared = function(points, sparedPoints) {
+	if(points.length < 2) {
+		return false;
+	} else {
+		var equation = getEquationFromTwoPoints(points[0], points[1]);	
+		
+		points.splice(0, 2);	// remove the two already used points
+		return doPointsMatchEquation(equation, points) && !doPointsMatchEquation(equation, sparedPoints);
+	}
+}
+
+function getEquationFromTwoPoints(pointA, pointB) {
+	// the linear equation y = m * x + b
+	var m = (pointB.y - pointA.y) / (pointB.x - pointA.x);
+
+	// given that pointA.y = m * pointA.x + b or pointB.y = m * pointB.x + b
+	var b = pointA.y - m*pointA.x;
+
+	return {m: m, b: b};
+}
+
+// a more scala-wise aproach :D
+function doPointsMatchEquation(equation, pointsArray) {
+	return pointsArray.every((element, index, array) => {
+		return element.y == element.x * equation.m + equation.b;
+	});
+}

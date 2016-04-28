@@ -84,22 +84,16 @@ describe('planet operations', function() {
 	});
 
 	describe('isOptimal', function() {
-		it('should return \'true\' when the planets are all the same', function() {
-			var planets = [{position: 0, distance: 5}, {position: 0, distance: 5}, {position: 0, distance: 5}];
-
-			assert.equal(backend.isOptimal(planets), true);
-		});
-
-		it('should return \'true\' when the planets describe a surface of 0 and don\'t contain the (0,0) coordinate', function() {
+		it('should return \'true\' when the planets are alligned and don\'t contain the (0,0) coordinate', function() {
 			var planets = [{position: 0, distance: 5}, {position: 90, distance: 5}, {position: 45, distance: math.sqrt(2.5*2.5 + 2.5*2.5)}];
 
 			assert.equal(backend.isOptimal(planets), true);
 		});
 
-		it('should return \'false\' when the planets describe a surface greater than 0', function() {
+		it('should return \'false\' when the planets are not aligned', function() {
 			var planets = [{position: 0, distance: 5}, {position: 0, distance: 5}, {position: 90, distance: 5}];
 
-			assert.equal(backend.isOptimal(planets), true);
+			assert.equal(backend.isOptimal(planets), false);
 		});
 	});
 });

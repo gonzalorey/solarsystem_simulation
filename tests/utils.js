@@ -79,4 +79,41 @@ describe('utils', function() {
 			assert.equal(utils.coordinatesContainPoint(coordinates, point), false);
 		});
 	});
+
+	describe('allPointsAllignedButTheSpared', function() {
+		it('should return \'true\' when all points are alligned but the spared one', function() {
+			var points = [{x: 0, y: 0}, {x: 1, y: 1}, {x: 2, y: 2}, {x: 3, y: 3}];
+			var spared = [{x: 2, y: 3}];
+
+			assert.equal(utils.allPointsAllignedButTheSpared(points, spared), true);
+		});
+
+		it('should return \'false\' when at least one of the not spared points is not aligned', function() {
+			var points = [{x: 0, y: 0}, {x: 1, y: 1}, {x: 2, y: 2}, {x: 3, y: 3}, {x: 4, y: 5}];
+			var spared = [{x: 2, y: 3}];
+
+			assert.equal(utils.allPointsAllignedButTheSpared(points, spared), false);
+		});
+
+		it('should return \'false\' when there are less than two points', function() {
+			var points = [{x: 0, y: 0}];
+			var spared = [{x: 2, y: 3}];
+
+			assert.equal(utils.allPointsAllignedButTheSpared(points, spared), false);
+		});
+
+		it('should return \'true\' for this case', function() {
+			var points = [{x: 0, y: 0}, {x: 1, y: 1}];
+			var spared = [{x: 2, y: 3}];
+
+			assert.equal(utils.allPointsAllignedButTheSpared(points, spared), true);
+		});
+
+		it('should return \'false\' when all points are the same', function() {
+			var points = [{x: 0, y: 0}, {x: 0, y: 0}, {x: 0, y: 0}, {x: 0, y: 0}];
+			var spared = [{x: 2, y: 3}];
+
+			assert.equal(utils.allPointsAllignedButTheSpared(points, spared), false);
+		});	
+	});
 });

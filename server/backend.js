@@ -124,7 +124,8 @@ exports.isRainy = function(planets) {
 
 exports.isOptimal = function(planets) {
 	var coordinates = getCoordinates(planets);
-	return utils.getSurface(coordinates) == 0 && !utils.coordinatesContainPoint(coordinates, {x: 0, y: 0});
+
+	return utils.allPointsAllignedButTheSpared(coordinates, [{x: 0, y: 0}]);
 };
 
 exports.maxRainPeriod = function(planets) {
