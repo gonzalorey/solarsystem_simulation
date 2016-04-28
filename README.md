@@ -14,6 +14,7 @@ This is a project based in Node.js with the purpose of just fiddling a little wi
 ### How to use
 * Weather service
 `http://localhost:3000/weather?day=<day>`
+
 Returns the weather condition for the given **day**. If the configuration in `.env` is set to `READ_FROM_DB=true`, it will fetch the data from the database instead of calculating it at the moment.
 
 * Simulation service
